@@ -11,6 +11,10 @@ body {
   margin-left: 5px;
 }
 
+.selected-card {
+  background-color: gainsboro;
+}
+
 .jade {
   border-color: darkseagreen;
 }
@@ -43,6 +47,10 @@ body {
 
 .white-die {
   color:blue;
+}
+
+.selected-die {
+  background-color: burlywood;
 }
 
 .dice-stock {
