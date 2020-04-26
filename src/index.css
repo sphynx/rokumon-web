@@ -27,3 +27,24 @@ body {
 .bottom-row {
   display: flex;
 }
+
+.die {
+  margin-right: 10px;
+  font-size: 40px;
+}
+
+.red-die {
+  color: red;
+}
+
+.black-die {
+  color: black;
+}
+
+.white-die {
+  color:blue;
+}
+
+.dice-stock {
+  margin-top: 10px;
+}
