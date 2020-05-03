@@ -53,6 +53,27 @@ body {
   background-color: burlywood;
 }
 
+.die-on-card {
+  margin-right: 10px;
+  font-size: 40px;
+}
+
+.red-die-on-card {
+  color: red;
+}
+
+.black-die-on-card {
+  color: black;
+}
+
+.white-die-on-card {
+  color:blue;
+}
+
+.selected-die-on-card {
+  background-color: burlywood;
+}
+
 .dice-stock {
   margin-top: 10px;
 }

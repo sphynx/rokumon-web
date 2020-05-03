@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import _ from 'lodash';
 
 function Card(props) {
   const kind = props.kind;
@@ -10,7 +11,12 @@ function Card(props) {
     <div
       className={`card ${kindClass} ${selectedClass}`}
       onClick={props.onClick}>
-      {props.ix}
+      <span className="card-ix">{props.ix}</span>
+
+      {props.dice.map(d =>
+        <DieOnCard color={d.color} value={d.value} />
+      )}
+
     </div>
   )
 }
@@ -25,6 +31,15 @@ function Die(props) {
       {die_char}
     </span>
   )
+}
+
+function DieOnCard(props) {
+  const die_char = "⚀⚁⚂⚃⚄⚅"[props.value - 1];
+  return (
+    <span className={`die-on-card ${props.color + '-die-on-card'}`}>
+      {die_char}
+    </span>
+  );
 }
 
 function DiceStock(props) {
@@ -174,28 +189,36 @@ class Game extends React.Component {
     switch (move.kind) {
       case 'place':
         const card_ix = move.where;
-        const die = move.what;
 
-        if (this.state.player1_moves) {
-          const dice = this.state.player1.dice;
-
+        function copy_dice(dice, leave_out) {
+          // copy dice to new_dice, leaving out the moved die
           let new_dice = [];
           let found = false;
-
           for (const d of dice) {
-            if (d === die && !found) {
+            if (d === leave_out && !found) {
               found = true;
             } else {
               new_dice.push({ ...d });
             }
           }
-
-          this.setState({ player1: { name: this.state.player1.name, dice: new_dice } });
+          return new_dice;
         }
 
-        // TODO:
-        // put the die on card
-        // change who's turn it is
+        if (this.state.player1_moves) {
+          const dice = this.state.player1.dice;
+          const new_dice = copy_dice(dice, move.what);
+          this.setState({ player1: { name: this.state.player1.name, dice: new_dice } });
+        } else {
+          const dice = this.state.player2.dice;
+          const new_dice = copy_dice(dice, move.what);
+          this.setState({ player2: { name: this.state.player2.name, dice: new_dice } });
+        }
+
+        // Put the die on the card.
+        const board = this.state.board;
+        let new_board = _.cloneDeep(board);
+        new_board.deck[card_ix].dice.push(move.what);
+        this.setState({ board: new_board, player1_moves: !this.state.player1_moves });
 
         break;
 
